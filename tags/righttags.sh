@@ -15,7 +15,7 @@ fi
 
 DZEN=dzen2
 
-readfifo=$HOME/tmp/fifo.mon2
+readfifo=/tmp/righttags.fifo
 tagsexy=$HOME/usr/share/dzen/tags/tagrightsexy.awk
 
 pkill -f "title-name dzenrighttags"
@@ -38,7 +38,7 @@ while true; do
 
 done | $DZEN \
 	-title-name 'dzenrighttags' \
-	-fn "Source Code Pro" \
+	-fn "Source Code Pro-11" \
 	-fg "$fore" -bg "$back" \
 	-h 26 \
 	-x 960 -y 0 \

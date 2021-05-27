@@ -1,12 +1,14 @@
 #!/bin/sh
 
+# BAR OFF -> kill daemons, tail -f the dwm tag socket
+
 readfifo=/tmp/dwm_tags
 tagdaemon=$HOME/usr/share/dzen/tags/tagdaemon.sh
 statusdaemon=$HOME/usr/share/dzen/bar/statusdaemon.sh
 hidden=false
 
 # SIGUSR1 toggles hidden variable
-trap 'if [ "$hidden" = "false" ]; then\
+trap	'if [ "$hidden" = "false" ]; then\
 		hidden=true;\
 	else\
 		hidden=false;\
@@ -17,7 +19,7 @@ while ! [ -p $readfifo ]; do
 	sleep 1
 done
 
-# if hidden kill dzenbars & run empty tail -f on fifo, vice versa
+# start/kill daemons
 while true; do
 	tailpid=$(pgrep -f "tail -f $readfifo --pid=$$")
 

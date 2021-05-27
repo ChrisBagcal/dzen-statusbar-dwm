@@ -18,8 +18,8 @@ BEGIN {
 	PREVCOL = ""
 	STR = ""
 
-	## ICONS
-	BRAVE = BITMAPS"/brave.xpm"
+	# FLAGS
+	DONELAYOUT = "false"
 }
 
 function tagTransition( curbg, txt ){
@@ -74,15 +74,22 @@ function prependSep( curbg, txt ) {
 
 ## LAYOUT
 /^...$/ {
+	if ( DONELAYOUT != "false" ) next
 	prependSep( LAYOUTCOL, $0 )
+	DONELAYOUT="true"
 	next
 }
 
 ## TITLE (only thing left)
 {
 	n = split($0, arr)
+	sub(/^.*\//, "", arr[n]) # remove leading part of path
+	if( length(arr[n]) > 12 ) {
+		TMPSTR = sprintf("%s...", substr(arr[n], 1, 12))
+		arr[n] = TMPSTR
+	}
 	prependSep( TITLECOL, arr[n] )
-	next
+	exit
 }
 
 END {

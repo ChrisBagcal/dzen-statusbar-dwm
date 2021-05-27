@@ -25,21 +25,21 @@ col_off=grey
    col5="#00BFFF"
    col6="#87CEFA"
 
-title=dzenrightstatus
+title=dzenleftstatus
 
   DZENHOME=$HOME/usr/share/dzen
-    NETCMD=$DZENHOME/internet.sh
+    NETCMD=$HOME/usr/bin/toggleinternet.sh
     CALCMD=$DZENHOME/cal.sh
-  MUSICCMD= #$DZENHOME/music.sh
+  MUSICCMD=$DZENHOME/music.sh
     VOLCMD=$DZENHOME/vol.sh
    TIMECMD=$DZENHOME/timezone.sh
-   RECDZEN=$DZENHOME/bar/dzenrightstatus.sh
-SIGRIGHTBAR=$DZENHOME/bar/sigrightbar.sh
+   RECDZEN=$DZENHOME/bar/dzenleftstatus.sh
+SIGRIGHTBAR=$DZENHOME/bar/sigleftbar.sh
     DZEN=/usr/bin/dzen2
     MOCP="/usr/bin/mocp --moc-dir $HOME/.config/moc"
 
    icons="$HOME/Images/bitmaps"
-dzenfifo="/tmp/rightstat.fifo"
+dzenfifo="/tmp/leftstat.fifo"
    trans="fn26/tri/mid_right_tri_stripe_inv.xbm"
 
    date_mod="true"
@@ -49,7 +49,7 @@ network_mod="true"
   music_mod="true"
 
 ## HELPERS
-# prev_col, cur_col (left <- right)
+# prev_col, cur_col (left -> right)
 transition() {
 	prev_col=$1
 	cur_col=$2
@@ -78,7 +78,7 @@ set_network() {
 		if have_network; then
 			ipcol=$col_on
 			ipv4=$(ip address show wlan0 | \
-				awk '/inet[^6]/{sub(/\/.*$/, "", $2); print $2}')
+				awk '/inet/{sub(/\/.*$/, "", $2); print $2}')
 		else
 			ipcol=$col_off
 			ipv4="0.0.0.0"
@@ -89,10 +89,8 @@ set_network() {
 		nettxt=$nettxt"^ca()"
 		nettxt=$nettxt"^fg()"
 	else # SKIP
-		nettxt="$network_prev"
+		nettxt=$nettxt"$network_prev"
 	fi
-
-	#echo "$nettxt" >&2
 
 	network_mod="false"
 	network_prev="$nettxt"
@@ -109,7 +107,9 @@ set_date() {
 		datetxt=$datetxt" ^i($icons/fn26/cal.xbm)"
 		datetxt=$datetxt"^fg()"
 		datetxt=$datetxt"^ca()"
+		#datetxt=$datetxt"^fg($fore2)"
 		datetxt=$datetxt"$(date +' %a - %m/%d/%y')"
+		#datetxt=$datetxt"^fg()"
 	else
 		datetxt=$datetxt"$date_prev"
 	fi
@@ -171,7 +171,9 @@ set_vol() {
 		voltxt=$voltxt"^fg()"
 		voltxt=$voltxt"^ca()"
 		voltxt=$voltxt"^ca(1, amixer set Master toggle >/dev/null && $SIGRIGHTBAR 35)"
+		#voltxt=$voltxt"^fg($fore2)"
 		voltxt=$voltxt" $leftvol%"
+		#voltxt=$voltxt"^fg()"
 		voltxt=$voltxt"^ca()"
 		voltxt=$voltxt"^ca()"
 		voltxt=$voltxt"^ca()"
@@ -189,7 +191,7 @@ set_music() {
 	musictxt=""
 
 	if [ "$music_mod" = "true" ]; then
-		musstat=$($MOCP -Q '%state' 2>/dev/null)
+		musstat=$($MOCP -i 2>/dev/null | awk '/State:/{ print $2; exit }')
 
 		musictxt=$musictxt"^fg(#00ced1)"
 		musictxt=$musictxt"^ca(1, $MUSICCMD)"

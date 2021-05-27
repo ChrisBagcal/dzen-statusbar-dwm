@@ -31,6 +31,7 @@ function tagTransition( curbg, txt ){
 		    curbg, txt, PREVCOL, curbg, SEP)
 	}
 
+	# TODO APPEND TAG
 	TMPSTR = sprintf("%s:%s", STR, aux)
 	STR = TMPSTR
 	PREVCOL = curbg
@@ -78,6 +79,7 @@ function prependSep( curbg, txt ) {
 ## TITLE (only thing left)
 {
 	n = split($0, arr)
+	sub(/^.*\//, "", arr[n]) # remove leading part of path
 	prependSep( TITLECOL, arr[n] )
 	next
 }

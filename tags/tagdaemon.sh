@@ -13,9 +13,11 @@ else
 	AWK=$(which awk)
 fi
 
+monitors=$(xrandr --listmonitors | $AWK '/Monitors:/ { print $2; exit }')
+
 readfifo=/tmp/dwm_tags
-writefifo1=$HOME/tmp/fifo.mon1
-writefifo2=$HOME/tmp/fifo.mon2
+writefifo1=/tmp/lefttags.fifo
+writefifo2=/tmp/righttags.fifo
 
 # wait for readfifo to exist
 while ! [ -p $readfifo ]; do
@@ -26,20 +28,19 @@ done
 [ -p $writefifo2 ] || mkfifo $writefifo2
 
 # mulitmonitor stuff
-monitors=$(xrandr --listmonitors | $AWK '/Monitors:/ {print $2; exit}')
 tag1prev=""
 tag2prev=""
 
 tail -f $readfifo | \
 while true; do
 	# start tags if not running
-	(pgrep -f "title-name dzenrighttags " >/dev/null) || $righttags &
-	(pgrep -f "title-name dzenlefttags " >/dev/null)  || $lefttags &
+	(pgrep -f "title-name dzenlefttags "  >/dev/null) || $lefttags &
+	[ "$monitors" = 2 ] && (pgrep -f "title-name dzenrighttags " >/dev/null || $righttags &)
 
 	read tagstatus
 
 	# filter tagstatus according to monitor, don't pipe if is content unchanged
-	mon=$(echo "$tagstatus" | $AWK '{n=split($0, arr, ":"); print arr[n]}')
+	mon=$(echo "$tagstatus" | $AWK '{ n=split($0, arr, ":"); print arr[n] }')
 
 	if [ "$mon" = "0" ] && [ "$tagstatus" != "$tag1prev" ]; then
 		echo "$tagstatus"  > $writefifo1

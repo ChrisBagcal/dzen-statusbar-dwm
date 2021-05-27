@@ -7,15 +7,15 @@ col2="#404040"
 col3="#505050"
 special="#44aabb"
 
-if (which nawk); then
+if (which nawk 2>/dev/null); then
 	AWK=$(which nawk)
 else
 	AWK=$(which awk)
 fi
 
-DZEN=dzen2
+DZEN=/usr/bin/dzen2
 
-readfifo=$HOME/tmp/fifo.mon1
+readfifo=/tmp/lefttags.fifo
 tagsexy=$HOME/usr/share/dzen/tags/tagleftsexy.awk
 
 pkill -f "title-name dzenlefttags"
@@ -33,12 +33,11 @@ while true; do
 	bartxt=$bartxt"$(echo $tagstatus | $AWK -f $tagsexy)"
 
 	echo "$bartxt"
-
 	sleep .01
 
 done | $DZEN \
 	-title-name 'dzenlefttags' \
-	-fn "Source Code Pro" \
+	-fn "Source Code Pro-11" \
 	-fg "$fore" -bg "$back" \
 	-h 26 \
 	-x 0 -y 0\
