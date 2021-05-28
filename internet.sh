@@ -31,11 +31,10 @@ text=$text"^ca(1, $internetoff && $internetex)"
 text=$text"Off"
 text=$text"^ca()"
 
-if [ "$state" = "connected" ]; then
-	text=$( echo "$text" | sed "s/On/^fg($oncol)On^fg()/" )
-elif [ "$state" = "disconnected" ]; then
-	text=$( echo "$text" | sed "s/Off/^fg($offcol)Off^fg()/" )
-fi
+case "$state" in
+	"connected") text=$( echo "$text" | sed "s/On/^fg($oncol)On^fg()/" ) ;;
+	"disconnected") text=$( echo "$text" | sed "s/Off/^fg($offcol)Off^fg()/" ) ;;
+esac
 
 pkill -f "$title"
 

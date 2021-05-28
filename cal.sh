@@ -6,16 +6,8 @@
   back="#303030"
 highbg="#00BFFF"
 highfg="#202020"
-
  icons="$HOME/Images/bitmaps/"
  calex=$HOME/usr/share/dzen/cal.sh
-
-if [ -z "$curx" ]; then
-	curx=$(xdotool getmouselocation)
-	curx=${curx%% *}
-	curx=${curx##*:}
-	export curx
-fi
 
 # cur_col, next_col, icon
 trans() {
@@ -30,6 +22,13 @@ trans() {
 	
 	echo "$str"
 }
+
+if [ -z "$curx" ]; then
+	curx=$(xdotool getmouselocation)
+	curx=${curx%% *}
+	curx=${curx##*:}
+	export curx
+fi
 
 opts="m:y:"
 
@@ -99,7 +98,7 @@ echo "$calender" |
 	-fn "FreeMono" \
 	-title-name "$title" -slave-name "$title" \
 	-fg $fore -bg $back \
-	-h 26 -w 226 \
+	-h 26 -w 200 \
 	-x $(( $curx - 113 )) -y 30 \
 	-ta c -sa c \
 	-l $lines \
