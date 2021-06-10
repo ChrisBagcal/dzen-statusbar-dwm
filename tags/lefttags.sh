@@ -37,7 +37,7 @@ while true; do
 
 done | $DZEN \
 	-title-name 'dzenlefttags' \
-	-fn "Source Code Pro-11" \
+	-fn "Source Code Pro-10" \
 	-fg "$fore" -bg "$back" \
 	-h 26 \
 	-x 0 -y 0\

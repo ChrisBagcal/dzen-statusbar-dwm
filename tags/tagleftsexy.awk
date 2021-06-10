@@ -3,9 +3,9 @@
 BEGIN {
 	RS = ":"
 	HOME = "/home/mmmchris"
-	BITMAPS = HOME"/Images/bitmaps"
-	SEP = BITMAPS"/fn26/tri/mid_left_tri_stripe.xbm"
-	DIFFSEP = BITMAPS"/fn26/tri/mid_left_tri_outline.xbm"
+	ICONS = HOME"/usr/share/dzen/icons"
+	SEP = ICONS"/tri/mid_left_half_stripe_tri.xbm"
+	DIFFSEP = ICONS"/tri/mid_left_half_tri_outline.xbm"
 	FORE = "#ffffff"
 	BACK = "#303030"
 	# OK = occupied
@@ -13,7 +13,7 @@ BEGIN {
 	UNOKCOL = "#505050"
 	EMPTYCOL = "#707070"
 	LAYOUTCOL = "#44aabb"
-	TITLECOL = "#800080"
+	TITLECOL = "#191970"
 	SEPCOL = "#000000"
 	PREVCOL = ""
 	STR = ""

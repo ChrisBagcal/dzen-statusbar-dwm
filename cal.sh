@@ -98,11 +98,11 @@ echo "$calender" |
 	-fn "FreeMono" \
 	-title-name "$title" -slave-name "$title" \
 	-fg $fore -bg $back \
-	-h 26 -w 200 \
+	-h 26 -w 214 \
 	-x $(( $curx - 113 )) -y 30 \
 	-ta c -sa c \
 	-l $lines \
 	-e "onstart=uncollapse;
 	;button3=exit;
-	;button5=exec:$calex -m $(( $month + 1 )) -y $year;
-	;button4=exec:$calex -m $(( $month - 1 )) -y $year;"
+	;button4=exec:$calex -m $(( $month + 1 )) -y $year;
+	;button5=exec:$calex -m $(( $month - 1 )) -y $year;"

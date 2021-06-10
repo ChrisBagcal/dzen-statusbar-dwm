@@ -38,9 +38,9 @@ SIGRIGHTBAR=$DZENHOME/bar/sigrightbar.sh
     DZEN=/usr/bin/dzen2
     MOCP="/usr/bin/mocp --moc-dir $HOME/.config/moc"
 
-   icons="$HOME/Images/bitmaps"
-dzenfifo="/tmp/rightstat.fifo"
-   trans="fn26/tri/mid_right_tri_stripe_inv.xbm"
+   icons=$DZENHOME/icons
+dzenfifo=/tmp/rightstat.fifo
+   trans=$DZENHOME/transright
 
    date_mod="true"
 network_mod="true"
@@ -55,7 +55,7 @@ transition() {
 	cur_col=$2
 
 	bartxt=$bartxt"^fg($prev_col)^bg($cur_col)"
-	bartxt=$bartxt"^i($icons/$trans)"
+	bartxt=$bartxt"^i($trans)"
 	bartxt=$bartxt"^fg($fore)"
 }
 have_network() {
@@ -106,7 +106,7 @@ set_date() {
 	if [ "$date_mod" = "true" ]; then
 		datetxt=$datetxt"^ca(1, $CALCMD -m $(date +%m) -y $(date +%Y))"
 		datetxt=$datetxt"^fg($col5)"
-		datetxt=$datetxt" ^i($icons/fn26/cal.xbm)"
+		datetxt=$datetxt" ^i($icons/cal.xbm)"
 		datetxt=$datetxt"^fg()"
 		datetxt=$datetxt"^ca()"
 		datetxt=$datetxt"$(date +' %a - %m/%d/%y')"
@@ -125,7 +125,7 @@ set_time() {
 	if [ "$time_mod" = "true" ]; then
 		timetxt=$timetxt" ^fg($col6)"
 		timetxt=$timetxt"^ca(1, $TIMECMD)"
-		timetxt=$timetxt"^i($icons/fn26/hourglass2.xbm)"
+		timetxt=$timetxt"^i($icons/hourglass2.xbm)"
 		timetxt=$timetxt"^ca()"
 		timetxt=$timetxt"^fg()"
 		timetxt=$timetxt"$(date +' %Z %I:%M:%S %p ')"
@@ -160,10 +160,10 @@ set_vol() {
 		voltxt=$voltxt"^ca(5, amixer set Master unmute 2%- >/dev/null && $SIGRIGHTBAR 35)"
 		if [ $(echo $volstat | cut -d " " -f 2) = "off" ] || [ $leftvol = "0" ] ; then
 			vol_col=$col_off
-			vol_ico=fn26/vol_off.xbm
+			vol_ico=vol_off.xbm
 		else
 			vol_col=black
-			vol_ico=fn26/vol_on.xbm
+			vol_ico=vol_on.xbm
 		fi	
 		voltxt=$voltxt"^ca(1, $VOLCMD)"
 		voltxt=$voltxt"^fg($vol_col)"
@@ -193,13 +193,13 @@ set_music() {
 
 		musictxt=$musictxt"^fg(#00ced1)"
 		musictxt=$musictxt"^ca(1, $MUSICCMD)"
-		musictxt=$musictxt" ^i($icons/fn26/music/music_note.xbm)"
+		musictxt=$musictxt" ^i($icons/music/music_note.xbm)"
 		musictxt=$musictxt"^ca()"
 		musictxt=$musictxt"^fg()"
 
 		if [ -n "$musstat" ] && [ "$musstat" != "STOP" ]; then
 			musictxt=$musictxt"^ca(1, $MOCP -r 2>/dev/null && $SIGRIGHTBAR 36)"
-			musictxt=$musictxt" ^i($icons/fn26/music/back.xbm)"
+			musictxt=$musictxt" ^i($icons/music/back.xbm)"
 			musictxt=$musictxt"^ca()"
 			
 			case $musstat in
@@ -208,10 +208,10 @@ set_music() {
 			esac
 
 			musictxt=$musictxt"^ca(1, $MOCP -G 2>/dev/null && $SIGRIGHTBAR 36)"
-			musictxt=$musictxt"^i($icons/fn26/music/$musbtn)"
+			musictxt=$musictxt"^i($icons/music/$musbtn)"
 			musictxt=$musictxt"^ca()"
 			musictxt=$musictxt"^ca(1, $MOCP -f 2>/dev/null && $SIGRIGHTBAR 36)"
-			musictxt=$musictxt"^i($icons/fn26/music/forward.xbm)"
+			musictxt=$musictxt"^i($icons/music/forward.xbm)"
 			musictxt=$musictxt"^ca()"
 		fi
 	else
@@ -222,6 +222,10 @@ set_music() {
 	music_prev="$musictxt"
 
 	bartxt=$bartxt"$musictxt"
+}
+set_terminal() {
+	terminaltxt=""
+	
 }
 
 pkill -f "dzen2 -title-name $title "
